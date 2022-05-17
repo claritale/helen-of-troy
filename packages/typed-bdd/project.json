@@ -1,0 +1,64 @@
+{
+  "$schema": "../../node_modules/nx/schemas/project-schema.json",
+  "sourceRoot": "packages/typed-bdd/src",
+  "projectType": "library",
+  "targets": {
+    "build": {
+      "executor": "@nrwl/js:tsc",
+      "outputs": ["{options.outputPath}"],
+      "options": {
+        "outputPath": "dist/packages/typed-bdd",
+        "main": "packages/typed-bdd/src/index.ts",
+        "tsConfig": "packages/typed-bdd/tsconfig.lib.json",
+        "assets": ["packages/typed-bdd/*.md"]
+      }
+    },
+    "publish": {
+      "executor": "@nrwl/workspace:run-commands",
+      "options": {
+        "command": "node tools/scripts/publish.mjs typed-bdd {args.ver} {args.tag}"
+      },
+      "dependsOn": [
+        {
+          "projects": "self",
+          "target": "build"
+        }
+      ]
+    },
+    "lint": {
+      "executor": "@nrwl/linter:eslint",
+      "outputs": ["{options.outputFile}"],
+      "options": {
+        "lintFilePatterns": ["packages/typed-bdd/**/*.ts"]
+      }
+    },
+    "test-types": {
+      "executor": "@nrwl/jest:jest",
+      "outputs": ["coverage/packages/typed-bdd/types"],
+      "options": {
+        "jestConfig": "packages/typed-bdd/__tests__/types/jest.config.ts",
+        "passWithNoTests": true
+      }
+    },
+    "test-unit": {
+      "executor": "@nrwl/jest:jest",
+      "outputs": ["coverage/packages/typed-bdd/unit"],
+      "options": {
+        "jestConfig": "packages/typed-bdd/__tests__/unit/jest.config.ts",
+        "passWithNoTests": true
+      }
+    },
+    "test": {
+      "executor": "@nrwl/workspace:run-commands",
+      "options": {
+        "command": "echo DONE",
+        "parallel": false
+      },
+      "dependsOn": [
+        { "projects": "self", "target": "test-types" },
+        { "projects": "self", "target": "test-unit" }
+      ]
+    }
+  },
+  "tags": []
+}

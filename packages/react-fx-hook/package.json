@@ -1,0 +1,7 @@
+{
+  "name": "@claritale/react-fx-hook",
+  "version": "0.0.1",
+  "description": "Just another React custom Hook for managing components Logic/Effects",
+  "author": "Alberto Sarmiento & Andy Gonzales",
+  "license": "MIT"
+}

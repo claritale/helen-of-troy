@@ -14,7 +14,11 @@
     "skipLibCheck": true,
     "skipDefaultLibCheck": true,
     "baseUrl": ".",
-    "paths": {}
+    "paths": {
+      "@claritale/react-fx-hook": ["packages/react-fx-hook/src/index.ts"],
+      "@claritale/test-utils": ["packages/test-utils/src/index.ts"],
+      "@claritale/typed-bdd": ["packages/typed-bdd/src/index.ts"]
+    }
   },
   "exclude": ["node_modules", "tmp"]
 }
