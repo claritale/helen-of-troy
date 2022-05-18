@@ -66,7 +66,7 @@ export function App() {
                 <div id="welcome" className="rounded shadow">
                   <h1>
                     <span> Hello there ! </span>
-                    Welcome to @clariTale/react-fx-hook Demo &nbsp; 👋
+                    Welcome to @claritale/react-fx-hook Demo &nbsp; 👋
                   </h1>
                 </div>
 

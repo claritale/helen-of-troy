@@ -324,7 +324,7 @@ function* todosCompletedMessageLogic() {
     const isAllDone = yield* fromProps.onChange((p) => p.tasks.every((x) => x.done))
 
     if (isAllDone) {
-      yield* actions.showToast({ text: 'Killed the Cock!' })
+      yield* actions.showToast({ text: "Congrats! All tasks done..." })
 
       yield* untilAction(['switchTaskDone', 'addTask'])
     }

@@ -4,7 +4,7 @@
 
 <br />
 
-[Try this demo!](https://react-fx-hook.vercel.app)
+[Try this demo!](https://try-react-fx.vercel.app)
 
 <br />
 
@@ -182,7 +182,7 @@ function* AppLogic() {
   
           if (offer.code === 'SPA') {
               // ..bad luck ?? :/
-              yield* flashError('Upss sorry, something went wrong booking ..')
+              yield* flashError('Oops sorry, something went wrong booking ..')
 
               if (offersStack[1].taken) {
                 // Then, here ends the flow 
@@ -232,13 +232,13 @@ function* booking(offer) {
     yield* setState({ 
       info: { 
         step: 'Booking ..', 
-        title: 'Booking your awsome choise ! \n ' + offer.caption,
+        title: 'Booking your awesome choise ! \n ' + offer.caption,
         subtitle: '..just a second.',
         opts: [],
       } 
     })
 
-    // tick tack
+    // tick tock
     yield* delay(3000)
 
     // confirm her place in that Vacation ...oopss, Busted :p
