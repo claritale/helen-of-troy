@@ -4,6 +4,11 @@
   "description": "Just another React custom Hook for managing components Logic/Effects",
   "author": "Alberto Sarmiento & Andy Gonzales",
   "license": "MIT",
+  "homepage": "https://github.com/claritale/helen-of-troy/tree/main/packages/react-fx-hook#readme",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/claritale/helen-of-troy.git"
+  },
   "peerDependencies": {
     "react": ">=16.8.0",
     "react-dom": ">=16.8.0"

@@ -3,5 +3,10 @@
   "version": "0.0.1",
   "type": "commonjs",
   "author": "Alberto Sarmiento & Andy Gonzales",
-  "license": "MIT"
+  "license": "MIT",
+  "homepage": "https://github.com/claritale/helen-of-troy/tree/main/packages/typed-bdd#readme",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/claritale/helen-of-troy.git"
+  }  
 }

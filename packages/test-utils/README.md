@@ -1,6 +1,16 @@
-# test-utils
+# @claritale/test-utils
 
 This library was generated with [Nx](https://nx.dev).
+
+<br />
+
+## Install
+
+```bash
+npm install --save-dev @claritale/test-utils
+```
+
+<br />
 
 ## Building
 

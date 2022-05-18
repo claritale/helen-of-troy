@@ -1,6 +1,16 @@
-# typed-bdd
+# @claritale/typed-bdd
 
 This library was generated with [Nx](https://nx.dev).
+
+<br />
+
+## Install
+
+```bash
+npm install --save-dev @claritale/typed-bdd
+```
+
+<br />
 
 ## Building
 

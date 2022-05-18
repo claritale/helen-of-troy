@@ -20,6 +20,11 @@
             "glob": "packages/react-fx-hook/README.md",
             "input": ".",
             "output": "."
+          },
+          {
+            "glob": "packages/react-fx-hook/src/lib/hook.d.ts",
+            "input": ".",
+            "output": "./lib"
           }
         ]
       }
