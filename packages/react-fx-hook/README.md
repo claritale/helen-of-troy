@@ -4,7 +4,7 @@
 
 <br />
 
-[Try this demo!](https://react-fx-hook.vercel.app)
+[Try this demo!](https://try-react-fx.vercel.app)
 
 <br />
 
@@ -238,7 +238,7 @@ function* booking(offer) {
       } 
     })
 
-    // tick tack
+    // tick tock
     yield* delay(3000)
 
     // confirm her place in that Vacation ...oopss, Busted :p
