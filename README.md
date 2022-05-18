@@ -6,7 +6,7 @@
 
 <p style="text-align: center;"><img src="https://avatars.githubusercontent.com/u/80991055?s=400&u=44b04a00eb3feb0d9cdf7201813a69b1088733e4&v=4" width="450"></p>
 
-🔎 ** A tall tale: The absolute best and simplest way to never again be concerned about react state management **
+✨✨✨ &nbsp; *A tall tale: The absolute best and simplest way to never again be concerned about react state management* ✨✨✨
 
 ## Adding capabilities to your workspace
 
