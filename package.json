@@ -4,6 +4,10 @@
   "license": "MIT",
   "scripts": {},
   "private": true,
+  "engines": {
+    "node": "16.14.0",
+    "npm": "8.5.1"
+  },
   "dependencies": {
     "core-js": "^3.6.5",
     "react": "18.1.0",
