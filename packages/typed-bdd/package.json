@@ -1,5 +1,7 @@
 {
   "name": "@claritale/typed-bdd",
   "version": "0.0.1",
-  "type": "commonjs"
+  "type": "commonjs",
+  "author": "Alberto Sarmiento & Andy Gonzales",
+  "license": "MIT"
 }
