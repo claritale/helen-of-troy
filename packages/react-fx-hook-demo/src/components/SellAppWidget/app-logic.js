@@ -146,7 +146,7 @@ export function* AppLogic() {
       if (option === 1) { // it's like, she want it
         if (offer.code === 'SPA') {
           // ..bad luck ?? :/
-          yield* flashError("Upss sorry, something went wrong booking .. \n\n [ FYI ..it's all just kidding ]")
+          yield* flashError("Oops sorry, something went wrong booking .. \n\n [ FYI ..it's all just kidding ]")
 
           if (offersStack[1].taken) {
             // Then, here ends the flow
@@ -214,7 +214,7 @@ function* booking(offer) {
   yield* setState({
     info: {
       step:     'Booking ..',
-      title:    `Booking your awsome choise ! \n ${offer.caption}`,
+      title:    `Booking your awesome choise ! \n ${offer.caption}`,
       subtitle: '..just a second.',
       opts:     [],
     },
@@ -224,7 +224,7 @@ function* booking(offer) {
   yield* delay(1000)
   yield* countDown(5)
 
-  // confirm her place in that Vacation ...upss, Busted :p
+  // confirm her place in that Vacation ...Oops, Busted :p
   yield* setState({
     info: {
       step:     'confim',

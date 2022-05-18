@@ -1,12 +1,12 @@
 
 
 # Claritale
+> There are few joys to compare with the telling of a well-told tale.
+> --Charles de Lint 😅
 
-This project was generated using [Nx](https://nx.dev).
+<p style="text-align: center;"><img src="https://avatars.githubusercontent.com/u/80991055?s=400&u=44b04a00eb3feb0d9cdf7201813a69b1088733e4&v=4" width="450"></p>
 
-<p style="text-align: center;"><img src="https://raw.githubusercontent.com/nrwl/nx/master/images/nx-logo.png" width="450"></p>
-
-🔎 **Smart, Fast and Extensible Build System**
+🔎 ** A tall tale: The absolute best and simplest way to never again be concerned about react state management **
 
 ## Adding capabilities to your workspace
 
