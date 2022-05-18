@@ -1,3 +1,5 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
+
 import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event'
 
@@ -79,7 +81,7 @@ function HookTester(props: PropsShape) {
   return (
     <div>
       <span data-testid="title-display">{state.title}</span>
-      {state.options.map(opt => (
+      {state.options.map((opt: any) => (
         <button 
           key={opt.id} 
           data-testid="option-selector"

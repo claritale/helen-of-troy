@@ -11,7 +11,11 @@
         "main": "packages/test-utils/src/index.ts",
         "tsConfig": "packages/test-utils/tsconfig.lib.json",
         "assets": ["packages/test-utils/*.md"]
-      }
+      },
+      "dependsOn": [
+        { "projects": "self", "target": "lint" },
+        { "projects": "self", "target": "test" }
+      ]      
     },
     "publish": {
       "executor": "@nrwl/workspace:run-commands",
@@ -19,10 +23,7 @@
         "command": "node tools/scripts/publish.mjs test-utils {args.ver} {args.tag}"
       },
       "dependsOn": [
-        {
-          "projects": "self",
-          "target": "build"
-        }
+        { "projects": "self", "target": "build" }
       ]
     },
     "lint": {
@@ -32,13 +33,32 @@
         "lintFilePatterns": ["packages/test-utils/**/*.ts"]
       }
     },
-    "test": {
+    "test-types": {
       "executor": "@nrwl/jest:jest",
-      "outputs": ["coverage/packages/test-utils"],
+      "outputs": ["coverage/packages/test-utils/types"],
       "options": {
-        "jestConfig": "packages/test-utils/jest.config.ts",
+        "jestConfig": "packages/test-utils/__tests__/types/jest.config.ts",
         "passWithNoTests": true
       }
+    },
+    "test-unit": {
+      "executor": "@nrwl/jest:jest",
+      "outputs": ["coverage/packages/test-utils/unit"],
+      "options": {
+        "jestConfig": "packages/test-utils/__tests__/unit/jest.config.ts",
+        "passWithNoTests": true
+      }
+    },
+    "test": {
+      "executor": "@nrwl/workspace:run-commands",
+      "options": {
+        "command": "echo DONE",
+        "parallel": false
+      },
+      "dependsOn": [
+        { "projects": "self", "target": "test-types" },
+        { "projects": "self", "target": "test-unit" }
+      ]
     }
   },
   "tags": []

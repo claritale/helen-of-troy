@@ -26,7 +26,11 @@
             "input": ".",
             "output": "./lib"
           }
-        ]
+        ],
+        "dependsOn": [
+          { "projects": "self", "target": "lint" },
+          { "projects": "self", "target": "test" }
+        ]  
       }
     },
     "publish": {
@@ -35,10 +39,7 @@
         "command": "node tools/scripts/publish.mjs react-fx-hook {args.ver} {args.tag}"
       },
       "dependsOn": [
-        {
-          "projects": "self",
-          "target": "build"
-        }
+        { "projects": "self", "target": "build" }
       ]
     },    
     "lint": {

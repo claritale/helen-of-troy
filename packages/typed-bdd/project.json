@@ -11,7 +11,11 @@
         "main": "packages/typed-bdd/src/index.ts",
         "tsConfig": "packages/typed-bdd/tsconfig.lib.json",
         "assets": ["packages/typed-bdd/*.md"]
-      }
+      },
+      "dependsOn": [
+        { "projects": "self", "target": "lint" },
+        { "projects": "self", "target": "test" }
+      ]
     },
     "publish": {
       "executor": "@nrwl/workspace:run-commands",
@@ -19,10 +23,7 @@
         "command": "node tools/scripts/publish.mjs typed-bdd {args.ver} {args.tag}"
       },
       "dependsOn": [
-        {
-          "projects": "self",
-          "target": "build"
-        }
+        { "projects": "self", "target": "build" }
       ]
     },
     "lint": {

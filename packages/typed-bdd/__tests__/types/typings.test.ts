@@ -14,40 +14,6 @@ import {
 } from '../../src';
 
 describe('typings', () => {
-  test('can assert on types', () => {
-    type Test01Expected = boolean;
-    type Test01RealType = boolean;
-    const test01Result: AssertTypeMatchesExpected<
-      Test01RealType,
-      Test01Expected
-    > = Expected.assignShouldPassed;
-    expect(test01Result).toBeDefined();
-    // ------------------------------------------------------------
-    type Test02Expected = boolean;
-    type Test02RealType = any;
-    const test02Result: AssertTypeMatchesExpected<
-      Test02RealType,
-      Test02Expected
-    > = Expected.assignShouldFailed;
-    expect(test02Result).toBeDefined();
-    // ------------------------------------------------------------
-    type Test03Expected = {};
-    type Test03RealType = { a: number };
-    const test03Result: AssertTypeMatchesExpected<
-      Test03RealType,
-      Test03Expected
-    > = Expected.assignShouldPassed;
-    expect(test03Result).toBeDefined();
-    // ------------------------------------------------------------
-    type Test04Expected = { a: number };
-    type Test04RealType = {};
-    const test04Result: AssertTypeMatchesExpected<
-      Test04RealType,
-      Test04Expected
-    > = Expected.assignShouldFailed;
-    expect(test04Result).toBeDefined();
-  });
-
   describe('L_Ids <L>', () => {
     test("when L is ''", () => {
       type TestExpected = never;
