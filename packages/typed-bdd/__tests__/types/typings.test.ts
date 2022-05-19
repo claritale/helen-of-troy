@@ -23,7 +23,7 @@ describe('typings', () => {
       const testResult: AssertTypeMatchesExpected<
         TestRealType,
         TestExpected
-      > = Expected.assignShouldPassed;
+      > = Expected.assignmentShouldPass;
       expect(testResult).toBeDefined();
     });
 
@@ -35,7 +35,7 @@ describe('typings', () => {
       const testResult: AssertTypeMatchesExpected<
         TestRealType,
         TestExpected
-      > = Expected.assignShouldPassed;
+      > = Expected.assignmentShouldPass;
       expect(testResult).toBeDefined();
     });
 
@@ -47,7 +47,7 @@ describe('typings', () => {
       const testResult: AssertTypeMatchesExpected<
         TestRealType,
         TestExpected
-      > = Expected.assignShouldPassed;
+      > = Expected.assignmentShouldPass;
       expect(testResult).toBeDefined();
     });
 
@@ -59,7 +59,7 @@ describe('typings', () => {
       const testResult: AssertTypeMatchesExpected<
         TestRealType,
         TestExpected
-      > = Expected.assignShouldPassed;
+      > = Expected.assignmentShouldPass;
       expect(testResult).toBeDefined();
     });
 
@@ -71,7 +71,7 @@ describe('typings', () => {
       const testResult: AssertTypeMatchesExpected<
         TestRealType,
         TestExpected
-      > = Expected.assignShouldPassed;
+      > = Expected.assignmentShouldPass;
       expect(testResult).toBeDefined();
     });
   });
@@ -85,7 +85,7 @@ describe('typings', () => {
       const testResult: AssertTypeMatchesExpected<
         TestRealType,
         TestExpected
-      > = Expected.assignShouldPassed;
+      > = Expected.assignmentShouldPass;
       expect(testResult).toBeDefined();
     });
 
@@ -97,7 +97,7 @@ describe('typings', () => {
       const testResult: AssertTypeMatchesExpected<
         TestRealType,
         TestExpected
-      > = Expected.assignShouldPassed;
+      > = Expected.assignmentShouldPass;
       expect(testResult).toBeDefined();
     });
 
@@ -109,8 +109,8 @@ describe('typings', () => {
       const testResult: AssertTypeMatchesExpected<
         TestRealType,
         TestExpected
-      > = Expected.assignShouldPassed;
-      expect(testResult).toBe(Expected.assignShouldPassed);
+      > = Expected.assignmentShouldPass;
+      expect(testResult).toBe(Expected.assignmentShouldPass);
     });
 
     test("when L is ' {   abc } {=hello world! } { obj } '", () => {
@@ -121,7 +121,7 @@ describe('typings', () => {
       const testResult: AssertTypeMatchesExpected<
         TestRealType,
         TestExpected
-      > = Expected.assignShouldPassed;
+      > = Expected.assignmentShouldPass;
       expect(testResult).toBeDefined();
     });
 
@@ -133,7 +133,7 @@ describe('typings', () => {
       const testResult: AssertTypeMatchesExpected<
         TestRealType,
         TestExpected
-      > = Expected.assignShouldPassed;
+      > = Expected.assignmentShouldPass;
       expect(testResult).toBeDefined();
     });
 
@@ -145,7 +145,7 @@ describe('typings', () => {
       const testResult: AssertTypeMatchesExpected<
         TestRealType,
         TestExpected
-      > = Expected.assignShouldPassed;
+      > = Expected.assignmentShouldPass;
       expect(testResult).toBeDefined();
     });
   });
@@ -159,7 +159,7 @@ describe('typings', () => {
       const testResult: AssertTypeMatchesExpected<
         TestRealType,
         TestExpected
-      > = Expected.assignShouldPassed;
+      > = Expected.assignmentShouldPass;
       expect(testResult).toBeDefined();
     });
 
@@ -171,7 +171,7 @@ describe('typings', () => {
       const testResult: AssertTypeMatchesExpected<
         TestRealType,
         TestExpected
-      > = Expected.assignShouldPassed;
+      > = Expected.assignmentShouldPass;
       expect(testResult).toBeDefined();
     });
 
@@ -183,7 +183,7 @@ describe('typings', () => {
       const testResult: AssertTypeMatchesExpected<
         TestRealType,
         TestExpected
-      > = Expected.assignShouldPassed;
+      > = Expected.assignmentShouldPass;
       expect(testResult).toBeDefined();
     });
 
@@ -195,7 +195,7 @@ describe('typings', () => {
       const testResult: AssertTypeMatchesExpected<
         TestRealType,
         TestExpected
-      > = Expected.assignShouldPassed;
+      > = Expected.assignmentShouldPass;
       expect(testResult).toBeDefined();
     });
 
@@ -207,7 +207,7 @@ describe('typings', () => {
       const testResult: AssertTypeMatchesExpected<
         TestRealType,
         TestExpected
-      > = Expected.assignShouldPassed;
+      > = Expected.assignmentShouldPass;
       expect(testResult).toBeDefined();
     });
   });
@@ -221,7 +221,7 @@ describe('typings', () => {
       const testResult: AssertTypeMatchesExpected<
         TestRealType,
         TestExpected
-      > = Expected.assignShouldPassed;
+      > = Expected.assignmentShouldPass;
       expect(testResult).toBeDefined();
     });
 
@@ -233,7 +233,7 @@ describe('typings', () => {
       const testResult: AssertTypeMatchesExpected<
         TestRealType,
         TestExpected
-      > = Expected.assignShouldPassed;
+      > = Expected.assignmentShouldPass;
       expect(testResult).toBeDefined();
     });
 
@@ -247,7 +247,7 @@ describe('typings', () => {
       const testResult: AssertTypeMatchesExpected<
         TestRealType,
         TestExpected
-      > = Expected.assignShouldPassed;
+      > = Expected.assignmentShouldPass;
       expect(testResult).toBeDefined();
     });
   });
@@ -261,7 +261,7 @@ describe('typings', () => {
       const testResult: AssertTypeMatchesExpected<
         TestRealType,
         TestExpected
-      > = Expected.assignShouldPassed;
+      > = Expected.assignmentShouldPass;
       expect(testResult).toBeDefined();
     });
 
@@ -273,7 +273,7 @@ describe('typings', () => {
       const testResult: AssertTypeMatchesExpected<
         TestRealType,
         TestExpected
-      > = Expected.assignShouldPassed;
+      > = Expected.assignmentShouldPass;
       expect(testResult).toBeDefined();
     });
 
@@ -286,7 +286,7 @@ describe('typings', () => {
       const testResult: AssertTypeMatchesExpected<
         TestRealType,
         TestExpected
-      > = Expected.assignShouldPassed;
+      > = Expected.assignmentShouldPass;
       expect(testResult).toBeDefined();
     });
 
@@ -304,7 +304,7 @@ describe('typings', () => {
       const testResult: AssertTypeMatchesExpected<
         TestRealType,
         TestExpected
-      > = Expected.assignShouldPassed;
+      > = Expected.assignmentShouldPass;
       expect(testResult).toBeDefined();
     });
 
@@ -324,7 +324,7 @@ describe('typings', () => {
       const testResult: AssertTypeMatchesExpected<
         TestRealType,
         TestExpected
-      > = Expected.assignShouldPassed;
+      > = Expected.assignmentShouldPass;
       expect(testResult).toBeDefined();
     });
   });
@@ -338,7 +338,7 @@ describe('typings', () => {
       const testResult: AssertTypeMatchesExpected<
         TestRealType,
         TestExpected
-      > = Expected.assignShouldPassed;
+      > = Expected.assignmentShouldPass;
       expect(testResult).toBeDefined();
     });
 
@@ -349,7 +349,7 @@ describe('typings', () => {
       const testResult: AssertTypeMatchesExpected<
         TestRealType,
         TestExpected
-      > = Expected.assignShouldPassed;
+      > = Expected.assignmentShouldPass;
       expect(testResult).toBeDefined();
     });
 
@@ -362,7 +362,7 @@ describe('typings', () => {
       const testResult: AssertTypeMatchesExpected<
         TestRealType,
         TestExpected
-      > = Expected.assignShouldPassed;
+      > = Expected.assignmentShouldPass;
       expect(testResult).toBeDefined();
     });
 
@@ -375,7 +375,7 @@ describe('typings', () => {
       const testResult: AssertTypeMatchesExpected<
         TestRealType,
         TestExpected
-      > = Expected.assignShouldFailed;
+      > = Expected.assignmentShouldFail;
       expect(testResult).toBeDefined();
     });
   });
@@ -406,7 +406,7 @@ describe('typings', () => {
       const testResult: AssertTypeMatchesExpected<
         TestRealType,
         TestExpected
-      > = Expected.assignShouldPassed;
+      > = Expected.assignmentShouldPass;
       expect(testResult).toBeDefined();
     });
 
@@ -418,7 +418,7 @@ describe('typings', () => {
       const stepInfoRefResult: AssertTypeMatchesExpected<
         StepInfoRefReal,
         StepInfoRefExpected
-      > = Expected.assignShouldPassed;
+      > = Expected.assignmentShouldPass;
       expect(stepInfoRefResult).toBeDefined();
       // ----------------------------
       type StepRegexpExpected = 'an object {*} has a prop {=*} {=*} exist';
@@ -426,7 +426,7 @@ describe('typings', () => {
       const stepRegexpResult: AssertTypeMatchesExpected<
         StepRegexpReal,
         StepRegexpExpected
-      > = Expected.assignShouldPassed;
+      > = Expected.assignmentShouldPass;
       expect(stepRegexpResult).toBeDefined();
       // ----------------------------
       type StepIdNamesExpected = ['o1'];
@@ -434,7 +434,7 @@ describe('typings', () => {
       const stepIdNamesResult: AssertTypeMatchesExpected<
         StepIdNamesReal,
         StepIdNamesExpected
-      > = Expected.assignShouldPassed;
+      > = Expected.assignmentShouldPass;
       expect(stepIdNamesResult).toBeDefined();
       // ----------------------------
       type StepIdsTupleExpected = [MyObj1];
@@ -442,7 +442,7 @@ describe('typings', () => {
       const stepIdsTupleResult: AssertTypeMatchesExpected<
         StepIdsTupleReal,
         StepIdsTupleExpected
-      > = Expected.assignShouldPassed;
+      > = Expected.assignmentShouldPass;
       expect(stepIdsTupleResult).toBeDefined();
       // ----------------------------
       type StepValuesTupleExpected = ['a', '123'];
@@ -450,7 +450,7 @@ describe('typings', () => {
       const stepValuesTupleResult: AssertTypeMatchesExpected<
         StepValuesTupleReal,
         StepValuesTupleExpected
-      > = Expected.assignShouldPassed;
+      > = Expected.assignmentShouldPass;
       expect(stepValuesTupleResult).toBeDefined();
     });
 
@@ -462,7 +462,7 @@ describe('typings', () => {
       const stepInfoRefResult: AssertTypeMatchesExpected<
         StepInfoRefReal,
         StepInfoRefExpected
-      > = Expected.assignShouldPassed;
+      > = Expected.assignmentShouldPass;
       expect(stepInfoRefResult).toBeDefined();
       // ----------------------------
       type StepRegexpExpected = 'object {*} is {=*} deep copy of {*}';
@@ -470,7 +470,7 @@ describe('typings', () => {
       const stepRegexpResult: AssertTypeMatchesExpected<
         StepRegexpReal,
         StepRegexpExpected
-      > = Expected.assignShouldPassed;
+      > = Expected.assignmentShouldPass;
       expect(stepRegexpResult).toBeDefined();
       // ----------------------------
       type StepIdNamesExpected = ['o2', 'o1'];
@@ -478,7 +478,7 @@ describe('typings', () => {
       const stepIdNamesResult: AssertTypeMatchesExpected<
         StepIdNamesReal,
         StepIdNamesExpected
-      > = Expected.assignShouldPassed;
+      > = Expected.assignmentShouldPass;
       expect(stepIdNamesResult).toBeDefined();
       // ----------------------------
       type StepIdsTupleExpected = [MyObj2, MyObj1];
@@ -486,7 +486,7 @@ describe('typings', () => {
       const stepIdsTupleResult: AssertTypeMatchesExpected<
         StepIdsTupleReal,
         StepIdsTupleExpected
-      > = Expected.assignShouldPassed;
+      > = Expected.assignmentShouldPass;
       expect(stepIdsTupleResult).toBeDefined();
       // ----------------------------
       type StepValuesTupleExpected = ['a'];
@@ -494,7 +494,7 @@ describe('typings', () => {
       const stepValuesTupleResult: AssertTypeMatchesExpected<
         StepValuesTupleReal,
         StepValuesTupleExpected
-      > = Expected.assignShouldPassed;
+      > = Expected.assignmentShouldPass;
       expect(stepValuesTupleResult).toBeDefined();
     });
   });

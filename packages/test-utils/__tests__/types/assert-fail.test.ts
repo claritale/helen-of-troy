@@ -4,200 +4,6 @@
 import { AssertTypeMatchesExpected, Expected } from '../../src';
 
 describe('typings', () => {
-  describe('matching ok ..', () => {
-    test('primitive type', () => {
-      type Expected = boolean;
-      type RealType = boolean;
-      const result: AssertTypeMatchesExpected<
-        RealType,
-        Expected
-      > = Expected.assignShouldPassed;
-      expect(result).toBeDefined();
-    });
-
-    test('union type', () => {
-      type Expected = 'a' | 'b';
-      type RealType = 'b' | 'a';
-      const result: AssertTypeMatchesExpected<
-        RealType,
-        Expected
-      > = Expected.assignShouldPassed;
-      expect(result).toBeDefined();
-    });
-  
-    test('object type', () => {
-      type Expected = { n: number, a: [string, number], d: { s: string } };
-      type RealType = { n: number, a: [string, number], d: { s: string } };
-      const result: AssertTypeMatchesExpected<
-        RealType,
-        Expected
-      > = Expected.assignShouldPassed;
-      expect(result).toBeDefined();
-    });
-  
-    test('array type', () => {
-      type Expected = [string, number];
-      type RealType = [string, number];
-      const result: AssertTypeMatchesExpected<
-        RealType,
-        Expected
-      > = Expected.assignShouldPassed;
-      expect(result).toBeDefined();
-    });
-  
-    test('function type (case 1)', () => {
-      type Expected = (n: number) => boolean;
-      type RealType = (n: number) => boolean;
-      const result: AssertTypeMatchesExpected<
-        RealType,
-        Expected
-      > = Expected.assignShouldPassed;
-      expect(result).toBeDefined();
-    });
-  
-    test('function type (case 2)', () => {
-      type Expected = (n: number) => boolean;
-      type RealType = (x: number) => boolean;
-      const result: AssertTypeMatchesExpected<
-        RealType,
-        Expected
-      > = Expected.assignShouldPassed;
-      expect(result).toBeDefined();
-    });
-  })
-
-  describe('matching "ok" (but non strictly)', () => {
-    test('[any] matches any type -- [NOT DESIRED] (but, not an expected test case)', () => {
-      type Expected = any;
-      type RealType = boolean;
-      const result: AssertTypeMatchesExpected<
-        RealType,
-        Expected
-      > = Expected.assignShouldPassed;
-      expect(result).toBeDefined();
-    });
-
-    test('primitive type (case 1) -- [NOT DESIRED]', () => {
-      type Expected = string;
-      type RealType = 'abc'; // not full expected type
-      const result: AssertTypeMatchesExpected<
-        RealType,
-        Expected
-      > = Expected.assignShouldPassed;
-      expect(result).toBeDefined();
-    });
-
-    test('primitive type (case 2) -- [NOT DESIRED]', () => {
-      type Expected = boolean;
-      type RealType = true; // not full expected type [missing false]
-      const result: AssertTypeMatchesExpected<
-        RealType,
-        Expected
-      > = Expected.assignShouldPassed;
-      expect(result).toBeDefined();
-    });
-
-    test('union type (case 1)', () => {
-      type Expected = 'a' | 'c';
-      type RealType = 'a' | 'b' | 'c'; // got full expected type
-      const result: AssertTypeMatchesExpected<
-        RealType,
-        Expected
-      > = Expected.assignShouldPassed;
-      expect(result).toBeDefined();
-    });
-
-    test('union type (case 2) -- [NOT DESIRED]', () => {
-      type Expected = 'a' | 'b';
-      type RealType = 'b'; // not full expected type [missing 'a']
-      const result: AssertTypeMatchesExpected<
-        RealType,
-        Expected
-      > = Expected.assignShouldPassed;
-      expect(result).toBeDefined();
-    });
-
-    test('union type (case 3) -- [NOT DESIRED]', () => {
-      type Expected = 'a' | 'b';
-      type RealType = 'x' | 'y' | 'b'; // not full expected type [missing 'a']
-      const result: AssertTypeMatchesExpected<
-        RealType,
-        Expected
-      > = Expected.assignShouldPassed;
-      expect(result).toBeDefined();
-    });
-  
-    test('object type (case 1)', () => {
-      type Expected = {};
-      type RealType = { n: number }; // got full expected type
-      const result: AssertTypeMatchesExpected<
-        RealType,
-        Expected
-      > = Expected.assignShouldPassed;
-      expect(result).toBeDefined();
-    });
-  
-    test('object type (case 2)', () => {
-      type Expected = { a: [string, number] };
-      type RealType = { n: number, a: [string, number], d: { s: string } }; // got full expected type
-      const result: AssertTypeMatchesExpected<
-        RealType,
-        Expected
-      > = Expected.assignShouldPassed;
-      expect(result).toBeDefined();
-    });
-  
-    test('array type (case 1) -- [NOT DESIRED]', () => {
-      type Expected = [string, number, boolean];
-      type RealType = ['a', 10, false]; // not full array element type
-      const result: AssertTypeMatchesExpected<
-        RealType,
-        Expected
-      > = Expected.assignShouldPassed;
-      expect(result).toBeDefined();
-    });
-  
-    test('array type (case 2) -- [NOT DESIRED]', () => {
-      type Expected = string[];
-      type RealType = any[]; // unexpected [any] in array element type
-      const result: AssertTypeMatchesExpected<
-        RealType,
-        Expected
-      > = Expected.assignShouldPassed;
-      expect(result).toBeDefined();
-    });
-  
-    test('function type (case 1)', () => {
-      type Expected = (s: 'a' | 'c') => boolean;
-      type RealType = (s: 'a' | 'b' | 'c') => boolean; // got full param type
-      const result: AssertTypeMatchesExpected<
-        RealType,
-        Expected
-      > = Expected.assignShouldPassed;
-      expect(result).toBeDefined();
-    });
-
-    test('function type (case 2) -- [NOT DESIRED]', () => {
-      type Expected = (s: string) => boolean;
-      type RealType = (s: string) => true; // not full return type
-      const result: AssertTypeMatchesExpected<
-        RealType,
-        Expected
-      > = Expected.assignShouldPassed;
-      expect(result).toBeDefined();
-    });
-
-    test('function type (case 3) -- [NOT DESIRED]', () => {
-      type Expected = (n: number, o: { s: string }) => boolean;
-      type RealType = (n: number) => boolean; // not full params list
-      const result: AssertTypeMatchesExpected<
-        RealType,
-        Expected
-      > = Expected.assignShouldPassed;
-      expect(result).toBeDefined();
-    });
-  })
-
   describe('not expecting [any] matching..', () => {
     type RealType = any;
 
@@ -206,7 +12,7 @@ describe('typings', () => {
       const result: AssertTypeMatchesExpected<
         RealType,
         Expected
-      > = Expected.assignShouldFailed;
+      > = Expected.assignmentShouldFail;
       expect(result).toBeDefined();
     });
 
@@ -215,7 +21,7 @@ describe('typings', () => {
       const result: AssertTypeMatchesExpected<
         RealType,
         Expected
-      > = Expected.assignShouldFailed;
+      > = Expected.assignmentShouldFail;
       expect(result).toBeDefined();
     });
   
@@ -224,7 +30,7 @@ describe('typings', () => {
       const result: AssertTypeMatchesExpected<
         RealType,
         Expected
-      > = Expected.assignShouldFailed;
+      > = Expected.assignmentShouldFail;
       expect(result).toBeDefined();
     });
   
@@ -233,7 +39,7 @@ describe('typings', () => {
       const result: AssertTypeMatchesExpected<
         RealType,
         Expected
-      > = Expected.assignShouldFailed;
+      > = Expected.assignmentShouldFail;
       expect(result).toBeDefined();
     });
   
@@ -242,7 +48,7 @@ describe('typings', () => {
       const result: AssertTypeMatchesExpected<
         RealType,
         Expected
-      > = Expected.assignShouldFailed;
+      > = Expected.assignmentShouldFail;
       expect(result).toBeDefined();
     });
   
@@ -251,7 +57,7 @@ describe('typings', () => {
       const result: AssertTypeMatchesExpected<
         RealType,
         Expected
-      > = Expected.assignShouldFailed;
+      > = Expected.assignmentShouldFail;
       expect(result).toBeDefined();
     });
   })
@@ -264,7 +70,7 @@ describe('typings', () => {
       const result: AssertTypeMatchesExpected<
         RealType,
         Expected
-      > = Expected.assignShouldFailed;
+      > = Expected.assignmentShouldFail;
       expect(result).toBeDefined();
     });
 
@@ -273,7 +79,7 @@ describe('typings', () => {
       const result: AssertTypeMatchesExpected<
         RealType,
         Expected
-      > = Expected.assignShouldFailed;
+      > = Expected.assignmentShouldFail;
       expect(result).toBeDefined();
     });
   
@@ -282,7 +88,7 @@ describe('typings', () => {
       const result: AssertTypeMatchesExpected<
         RealType,
         Expected
-      > = Expected.assignShouldFailed;
+      > = Expected.assignmentShouldFail;
       expect(result).toBeDefined();
     });
   
@@ -291,7 +97,7 @@ describe('typings', () => {
       const result: AssertTypeMatchesExpected<
         RealType,
         Expected
-      > = Expected.assignShouldFailed;
+      > = Expected.assignmentShouldFail;
       expect(result).toBeDefined();
     });
   
@@ -300,7 +106,7 @@ describe('typings', () => {
       const result: AssertTypeMatchesExpected<
         RealType,
         Expected
-      > = Expected.assignShouldFailed;
+      > = Expected.assignmentShouldFail;
       expect(result).toBeDefined();
     });
   })
@@ -313,7 +119,7 @@ describe('typings', () => {
       const result: AssertTypeMatchesExpected<
         RealType,
         Expected
-      > = Expected.assignShouldFailed;
+      > = Expected.assignmentShouldFail;
       expect(result).toBeDefined();
     });
 
@@ -322,7 +128,7 @@ describe('typings', () => {
       const result: AssertTypeMatchesExpected<
         RealType,
         Expected
-      > = Expected.assignShouldFailed;
+      > = Expected.assignmentShouldFail;
       expect(result).toBeDefined();
     });
   
@@ -331,7 +137,7 @@ describe('typings', () => {
       const result: AssertTypeMatchesExpected<
         RealType,
         Expected
-      > = Expected.assignShouldFailed;
+      > = Expected.assignmentShouldFail;
       expect(result).toBeDefined();
     });
   
@@ -340,7 +146,7 @@ describe('typings', () => {
       const result: AssertTypeMatchesExpected<
         RealType,
         Expected
-      > = Expected.assignShouldFailed;
+      > = Expected.assignmentShouldFail;
       expect(result).toBeDefined();
     });
   
@@ -349,39 +155,99 @@ describe('typings', () => {
       const result: AssertTypeMatchesExpected<
         RealType,
         Expected
-      > = Expected.assignShouldFailed;
+      > = Expected.assignmentShouldFail;
       expect(result).toBeDefined();
     });
   })
 
   describe('not matching ..', () => {
-    test('primitive type (case 1)', () => {
-      type Expected = boolean;
+    test('expecting [any] type (case 1)', () => {
+      type Expected = any;
+      type RealType = never;
+      const result: AssertTypeMatchesExpected<
+        RealType,
+        Expected
+      > = Expected.assignmentShouldFail;
+      expect(result).toBeDefined();
+    });
+
+    test('expecting [any] type (case 2)', () => {
+      type Expected = any;
+      type RealType = unknown;
+      const result: AssertTypeMatchesExpected<
+        RealType,
+        Expected
+      > = Expected.assignmentShouldFail;
+      expect(result).toBeDefined();
+    });
+
+    test('expecting [never] type (case 1)', () => {
+      type Expected = never;
+      type RealType = any;
+      const result: AssertTypeMatchesExpected<
+        RealType,
+        Expected
+      > = Expected.assignmentShouldFail;
+      expect(result).toBeDefined();
+    });
+
+    test('expecting [never] type (case 2)', () => {
+      type Expected = never;
+      type RealType = unknown;
+      const result: AssertTypeMatchesExpected<
+        RealType,
+        Expected
+      > = Expected.assignmentShouldFail;
+      expect(result).toBeDefined();
+    });
+
+    test('str literal type (case 1)', () => {
+      type Expected = 'abc';
+      type RealType = 'xyz';
+      const result: AssertTypeMatchesExpected<
+        RealType,
+        Expected
+      > = Expected.assignmentShouldFail;
+      expect(result).toBeDefined();
+    });  
+
+    test('str literal type (case 2)', () => {
+      type Expected = 'abc';
       type RealType = string;
       const result: AssertTypeMatchesExpected<
         RealType,
         Expected
-      > = Expected.assignShouldFailed;
+      > = Expected.assignmentShouldFail;
+      expect(result).toBeDefined();
+    });  
+
+    test('primitive type (case 1)', () => {
+      type Expected = number;
+      type RealType = string;
+      const result: AssertTypeMatchesExpected<
+        RealType,
+        Expected
+      > = Expected.assignmentShouldFail;
       expect(result).toBeDefined();
     });
 
-    test('primitive type (case 2) -- [Match NOT DESIRED]', () => {
+    test('primitive type (case 2)', () => {
       type Expected = string;
       type RealType = 'abc'; // not full expected type
       const result: AssertTypeMatchesExpected<
         RealType,
         Expected
-      > = Expected.assignShouldPassed;
+      > = Expected.assignmentShouldFail;
       expect(result).toBeDefined();
-    });
+    });  
 
-    test('primitive type (case 3) -- [Match NOT DESIRED]', () => {
+    test('primitive type (case 3)', () => {
       type Expected = boolean;
       type RealType = true; // not full expected type [missing false]
       const result: AssertTypeMatchesExpected<
         RealType,
         Expected
-      > = Expected.assignShouldPassed;
+      > = Expected.assignmentShouldFail;
       expect(result).toBeDefined();
     });    
 
@@ -391,27 +257,27 @@ describe('typings', () => {
       const result: AssertTypeMatchesExpected<
         RealType,
         Expected
-      > = Expected.assignShouldFailed;
+      > = Expected.assignmentShouldFail;
       expect(result).toBeDefined();
     });
 
-    test('union type (case 2) -- [Match NOT DESIRED]', () => {
+    test('union type (case 2)', () => {
       type Expected = 'a' | 'b';
       type RealType = 'b'; // not full expected type [missing 'a']
       const result: AssertTypeMatchesExpected<
         RealType,
         Expected
-      > = Expected.assignShouldPassed;
+      > = Expected.assignmentShouldFail;
       expect(result).toBeDefined();
     });
 
-    test('union type (case 3) -- [Match NOT DESIRED]', () => {
+    test('union type (case 3)', () => {
       type Expected = 'a' | 'b';
       type RealType = 'x' | 'y' | 'b'; // not full expected type [missing 'a']
       const result: AssertTypeMatchesExpected<
         RealType,
         Expected
-      > = Expected.assignShouldPassed;
+      > = Expected.assignmentShouldFail;
       expect(result).toBeDefined();
     });
 
@@ -421,7 +287,7 @@ describe('typings', () => {
       const result: AssertTypeMatchesExpected<
         RealType,
         Expected
-      > = Expected.assignShouldFailed;
+      > = Expected.assignmentShouldFail;
       expect(result).toBeDefined();
     });
   
@@ -431,7 +297,7 @@ describe('typings', () => {
       const result: AssertTypeMatchesExpected<
         RealType,
         Expected
-      > = Expected.assignShouldFailed;
+      > = Expected.assignmentShouldFail;
       expect(result).toBeDefined();
     });
   
@@ -441,9 +307,19 @@ describe('typings', () => {
       const result: AssertTypeMatchesExpected<
         RealType,
         Expected
-      > = Expected.assignShouldFailed;
+      > = Expected.assignmentShouldFail;
       expect(result).toBeDefined();
     });
+  
+    test('object type (case 4)', () => {
+      type Expected = { n: number, a: [string, number], d: { s: string } };
+      type RealType = { n: number, a: [string, number] }; // missing prop [d: {...}]
+      const result: AssertTypeMatchesExpected<
+        RealType,
+        Expected
+      > = Expected.assignmentShouldFail;
+      expect(result).toBeDefined();
+    });    
   
     test('array type (case 1)', () => {
       type Expected = [];
@@ -451,7 +327,7 @@ describe('typings', () => {
       const result: AssertTypeMatchesExpected<
         RealType,
         Expected
-      > = Expected.assignShouldFailed;
+      > = Expected.assignmentShouldFail;
       expect(result).toBeDefined();
     });
   
@@ -461,7 +337,7 @@ describe('typings', () => {
       const result: AssertTypeMatchesExpected<
         RealType,
         Expected
-      > = Expected.assignShouldFailed;
+      > = Expected.assignmentShouldFail;
       expect(result).toBeDefined();
     });
   
@@ -471,7 +347,7 @@ describe('typings', () => {
       const result: AssertTypeMatchesExpected<
         RealType,
         Expected
-      > = Expected.assignShouldFailed;
+      > = Expected.assignmentShouldFail;
       expect(result).toBeDefined();
     });
   
@@ -481,7 +357,7 @@ describe('typings', () => {
       const result: AssertTypeMatchesExpected<
         RealType,
         Expected
-      > = Expected.assignShouldFailed;
+      > = Expected.assignmentShouldFail;
       expect(result).toBeDefined();
     });
   
@@ -491,27 +367,37 @@ describe('typings', () => {
       const result: AssertTypeMatchesExpected<
         RealType,
         Expected
-      > = Expected.assignShouldFailed;
+      > = Expected.assignmentShouldFail;
       expect(result).toBeDefined();
     });
   
-    test('array type (case 6) -- [Match NOT DESIRED]', () => {
+    test('array type (case 6)', () => {
+      type Expected = [string, number];
+      type RealType = [any, number]; // unexpected [any] in array element type
+      const result: AssertTypeMatchesExpected<
+        RealType,
+        Expected
+      > = Expected.assignmentShouldFail;
+      expect(result).toBeDefined();
+    });
+  
+    test('array type (case 7)', () => {
       type Expected = string[];
       type RealType = any[]; // unexpected [any] in array element type
       const result: AssertTypeMatchesExpected<
         RealType,
         Expected
-      > = Expected.assignShouldPassed;
+      > = Expected.assignmentShouldFail;
       expect(result).toBeDefined();
     });
 
-    test('array type (case 7) -- [Match NOT DESIRED]', () => {
+    test('array type (case 8)', () => {
       type Expected = [string, number, boolean];
       type RealType = ['a', 10, false]; // not full array element type
       const result: AssertTypeMatchesExpected<
         RealType,
         Expected
-      > = Expected.assignShouldPassed;
+      > = Expected.assignmentShouldFail;
       expect(result).toBeDefined();
     });
   
@@ -521,7 +407,7 @@ describe('typings', () => {
       const result: AssertTypeMatchesExpected<
         RealType,
         Expected
-      > = Expected.assignShouldFailed;
+      > = Expected.assignmentShouldFail;
       expect(result).toBeDefined();
     });
   
@@ -531,7 +417,7 @@ describe('typings', () => {
       const result: AssertTypeMatchesExpected<
         RealType,
         Expected
-      > = Expected.assignShouldFailed;
+      > = Expected.assignmentShouldFail;
       expect(result).toBeDefined();
     });
   
@@ -541,28 +427,48 @@ describe('typings', () => {
       const result: AssertTypeMatchesExpected<
         RealType,
         Expected
-      > = Expected.assignShouldFailed;
+      > = Expected.assignmentShouldFail;
+      expect(result).toBeDefined();
+    });
+
+    test('function type (case 4)', () => {
+      type Expected = (s: 'a' | 'c') => boolean;
+      type RealType = (s: 'a' | 'b' | 'x') => boolean; // not full param type
+      const result: AssertTypeMatchesExpected<
+        RealType,
+        Expected
+      > = Expected.assignmentShouldFail;
       expect(result).toBeDefined();
     });
   
-    test('function type (case 4) -- [Match NOT DESIRED]', () => {
+    test('function type (case 5)', () => {
       type Expected = (n: number, o: { s: string }) => boolean;
       type RealType = (n: number) => boolean; // not full params list
       const result: AssertTypeMatchesExpected<
         RealType,
         Expected
-      > = Expected.assignShouldPassed;
+      > = Expected.assignmentShouldFail;
       expect(result).toBeDefined();
     });
 
-    test('function type (case 5) -- [Match NOT DESIRED]', () => {
+    test('function type (case 6)', () => {
       type Expected = (s: string) => boolean;
       type RealType = (s: string) => true; // not full return type
       const result: AssertTypeMatchesExpected<
         RealType,
         Expected
-      > = Expected.assignShouldPassed;
+      > = Expected.assignmentShouldFail;
       expect(result).toBeDefined();
     });
+
+    test('function type (case 7)', () => {
+      type Expected = (n: number, s: string) => {x: boolean, y: number};
+      type RealType = (n: number, s: string) => {x: boolean}; // not full return type
+      const result: AssertTypeMatchesExpected<
+        RealType,
+        Expected
+      > = Expected.assignmentShouldFail;
+      expect(result).toBeDefined();
+    });  
   })
 });
