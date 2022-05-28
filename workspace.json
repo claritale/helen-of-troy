@@ -2,6 +2,7 @@
   "$schema": "./node_modules/nx/schemas/workspace-schema.json",
   "version": 2,
   "projects": {
+    "react-awaitables-hook": "packages/react-awaitables-hook",
     "react-fx-hook": "packages/react-fx-hook",
     "react-fx-hook-demo": "packages/react-fx-hook-demo",
     "react-fx-hook-demo-e2e": "packages/react-fx-hook-demo-e2e",
