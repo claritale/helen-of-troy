@@ -29,7 +29,7 @@ interface MemRef<StateShape> {
   pendingChanges?: Array<Defer>
 }
 
-function createDefer(): Defer {
+export function createDefer(): Defer {
   const d: any = {} // eslint-disable-line @typescript-eslint/no-explicit-any
   d.promise = new Promise((res, rej) => {
     d.resolve = res

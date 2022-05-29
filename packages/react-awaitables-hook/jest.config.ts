@@ -7,4 +7,5 @@ export default {
   },
   moduleFileExtensions: ['ts', 'tsx', 'js', 'jsx'],
   coverageDirectory: '../../coverage/packages/react-awaitables-hook',
+  setupFilesAfterEnv: ['./jest.setupTests.ts'],
 };
