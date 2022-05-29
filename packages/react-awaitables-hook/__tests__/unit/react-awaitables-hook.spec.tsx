@@ -1,7 +1,7 @@
 import { render, waitFor, act } from '@testing-library/react';
 import React from 'react';
 
-import {useAwaitables, FlowScript, createDefer} from '../../src/lib/react-awaitables-hook';
+import {useAwaitables, FlowScript} from '../../src/lib/react-awaitables-hook';
 
 describe('ReactAwaitablesHook', () => {
   it('render successfully', async () => {
@@ -104,8 +104,8 @@ describe('ReactAwaitablesHook', () => {
 });
 
 /**
- *  A component that expects to have a callable children, 
- *  which will receive an object with refs to curr state and actions fns
+ *  A component that expects props to have a flowScript to be run and a callable children, 
+ *  which will be called with with refs to curr state and actions fns
  */
 const Tester: React.FC<TesterProps> = ({ flowScript, children }) => {
   const { flowRunner, state } = useAwaitables(
