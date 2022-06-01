@@ -1,7 +1,7 @@
 import { render, waitFor, act } from '@testing-library/react';
 import React from 'react';
 
-import {useAwaitables, FlowScript} from '../../src/lib/react-awaitables-hook';
+import {useAwaitables, FlowScript, TestingActionsToCall} from '../../src/lib/react-awaitables-hook';
 
 describe('ReactAwaitablesHook', () => {
   it('render successfully', async () => {
@@ -12,7 +12,7 @@ describe('ReactAwaitablesHook', () => {
     expect(baseElement).toBeTruthy();
 
     expect(flowScript).toBeCalled()
-    expect(testerChildren).lastCalledWith({ title: 'loading...' })
+    expect(testerChildren).lastCalledWith({ title: 'loading...' }, expect.anything())
   });
 
   it('render direct state update', () => {
@@ -23,8 +23,9 @@ describe('ReactAwaitablesHook', () => {
 
     render(<Tester flowScript={flowScript}>{testerChildren}</Tester>);
 
-    expect(testerChildren).toHaveBeenNthCalledWith(1, { title: 'loading...' })
-    expect(testerChildren).toHaveBeenNthCalledWith(2, { title: 'ready' })
+    expect(testerChildren).nthCalledWith(1, { title: 'loading...' }, expect.anything())
+    expect(testerChildren).nthCalledWith(2, { title: 'ready' }, expect.anything())
+    expect(testerChildren).toBeCalledTimes(2)
   });
 
   it('render direct concurrent state updates', () => {
@@ -37,8 +38,9 @@ describe('ReactAwaitablesHook', () => {
 
     render(<Tester flowScript={flowScript}>{testerChildren}</Tester>);
 
-    expect(testerChildren).toHaveBeenNthCalledWith(1, { title: 'loading...' })
-    expect(testerChildren).toHaveBeenNthCalledWith(2, { title: 'running..' })
+    expect(testerChildren).nthCalledWith(1, { title: 'loading...' }, expect.anything())
+    expect(testerChildren).nthCalledWith(2, { title: 'running..' }, expect.anything())
+    expect(testerChildren).not.toHaveBeenCalledWith({ title: 'ready' }, expect.anything())
   });
 
   it('render in-sequence state updates (case 1)', async () => {
@@ -51,10 +53,10 @@ describe('ReactAwaitablesHook', () => {
 
     render(<Tester flowScript={flowScript}>{testerChildren}</Tester>);
 
-    expect(testerChildren).toHaveBeenNthCalledWith(1, { title: 'loading...' })
-    expect(testerChildren).toHaveBeenNthCalledWith(2, { title: 'ready' })
+    expect(testerChildren).nthCalledWith(1, { title: 'loading...' }, expect.anything())
+    expect(testerChildren).nthCalledWith(2, { title: 'ready' }, expect.anything())
     await waitFor(() => {
-      expect(testerChildren).toHaveBeenNthCalledWith(3, { title: 'running..' })
+      expect(testerChildren).nthCalledWith(3, { title: 'running..' }, expect.anything())
     })
   });
 
@@ -70,13 +72,13 @@ describe('ReactAwaitablesHook', () => {
     render(<Tester flowScript={flowScript}>{testerChildren}</Tester>);
 
     await waitFor(() => {
-      expect(testerChildren).toHaveBeenLastCalledWith({ title: 'done' })
+      expect(testerChildren).lastCalledWith({ title: 'done' }, expect.anything())
     })
-    expect(testerChildren).toHaveBeenCalledTimes(7)
-    expect(testerChildren).toHaveBeenNthCalledWith(1, { title: 'loading...' })
+    expect(testerChildren).nthCalledWith(1, { title: 'loading...' }, expect.anything())
     for (let i = 1; i<=5; i+=1) {
-        expect(testerChildren).toHaveBeenNthCalledWith(i + 1, { title: `step ${i}` })
+        expect(testerChildren).nthCalledWith(i + 1, { title: `step ${i}` }, expect.anything())
     }
+    expect(testerChildren).toBeCalledTimes(7)
   });
 
   it('render delayed state update', async () => {
@@ -92,34 +94,64 @@ describe('ReactAwaitablesHook', () => {
   
       act(() => { jest.advanceTimersByTime(1010) })
 
-      expect(testerChildren).nthCalledWith(1, { title: 'loading...' })
+      expect(testerChildren).nthCalledWith(1, { title: 'loading...' }, expect.anything())
       await waitFor(() => {
-        expect(testerChildren).nthCalledWith(2, { title: 'hello' })
+        expect(testerChildren).nthCalledWith(2, { title: 'hello' }, expect.anything())
       })
+      expect(testerChildren).toBeCalledTimes(2)
     }
     finally {
       jest.useRealTimers()
     }
   });
+
+  it('render user-triggered state update', async () => {
+    const flowScript: FlowScript<StateShape, ActionsMap> = async ({ setState, untilAction }) => {
+      const action = await untilAction('setName')
+      await setState({ title: `user called action: [${action.actionId}] -- so, hello ${action.guessName}` })
+      await setState({ title: 'done' })
+    }
+    const testerChildren = jest.fn() 
+
+    render(<Tester flowScript={flowScript}>{testerChildren}</Tester>);
+    
+    const testActions = usingTestActions(testerChildren)
+    testActions.setName('Jorge')
+
+    await waitFor(() => {
+      expect(testerChildren).lastCalledWith({ title: 'done' }, expect.anything())
+    })
+    expect(testerChildren).nthCalledWith(1, { title: 'loading...' }, expect.anything())
+    expect(testerChildren).nthCalledWith(2, { title: 'user called action: [setName] -- so, hello Jorge' }, expect.anything())
+    expect(testerChildren).toBeCalledTimes(3)
+  });
 });
+
 
 /**
  *  A component that expects props to have a flowScript to be run and a callable children, 
  *  which will be called with with refs to curr state and actions fns
  */
 const Tester: React.FC<TesterProps> = ({ flowScript, children }) => {
-  const { flowRunner, state } = useAwaitables(
-    initialState,
-    { setName: (name: string) => ({ guessName: name }) }
-  )
+  const { flowRunner, state, actions } = useAwaitables(initialState, actionsMap)
   flowRunner(flowScript)
-  return children(state)
+  return children(state, actions)
+}
+
+function usingTestActions(testerChildren: jest.Mock): TestingActionsToCall<ActionsMap> {
+  return testerChildren.mock.calls[0][1]
 }
 
 interface StateShape {
   title: string
 }
 const initialState: StateShape = { title: 'loading...' }
+
+const actionsMap = {
+  canStart: (can: boolean) => ({ canNot: !can }),
+  setName: (name: string) => ({ guessName: name })
+}
+type ActionsMap = typeof actionsMap
 
 interface TesterProps {
   flowScript: FlowScript<StateShape> 
