@@ -1,6 +1,6 @@
 import React from 'react';
 import { TestingActionsToCall } from '../../src/lib/core';
-import { useAwaitables, FlowScript } from '../../src/lib/hook';
+import { useAwaitables, FlowScript, FinishCb } from '../../src/lib/hook';
 
 
 /**
@@ -9,10 +9,14 @@ import { useAwaitables, FlowScript } from '../../src/lib/hook';
  */
  interface TesterProps {
   flowScript: TestFlowScript;
+  options?: {
+    onFinish?: FinishCb;
+    logger?: Console;
+  },
   children: (...args: unknown[]) => ReturnType<React.FC>;
 }
-export const Tester: React.FC<TesterProps> = ({ flowScript, children }) => {
-  const { flowRunner, state, actions } = useAwaitables(initialState, actionsMap);
+export const Tester: React.FC<TesterProps> = ({ flowScript, options = {}, children }) => {
+  const { flowRunner, state, actions } = useAwaitables(initialState, actionsMap, options);
   flowRunner(flowScript);
   return children(state, actions);
 };

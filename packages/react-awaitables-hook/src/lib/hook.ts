@@ -14,14 +14,19 @@ export interface FlowScript<StateShape, ActionsMap extends AnyActionsMap = any> 
   (_: BasicAwaitables<StateShape, ActionsMap>): Promise<void> | void
 }
 
+type CanceledStatus = false | { reason: 'manual' | 'error', error?: unknown }
+export type FinishCb = (canceled: CanceledStatus) => void
+export type HookOptions = { finishCb?: FinishCb, logger?: Console }
+
 export function useAwaitables<
   StateShape extends StringKeyedMap<any>, 
   ActionsMap extends AnyActionsMap
 >(
   initialState: StateShape, 
-  actionsMap: ActionsMap, 
-  logger: Console = console
+  actionsMap: ActionsMap,
+  options: HookOptions = {}
 ) {
+  const logger = options.logger ?? console
   const nextRenderPromiseRef = useRef<Defer | null>(null)
   const registerForNextRender = useCallback((): Promise<void> => {
     if (!nextRenderPromiseRef.current) {
@@ -72,6 +77,7 @@ export function useAwaitables<
   useEffect(() => {
     mem.mounted = true
 
+    let canceled: CanceledStatus = false
     const runFlowScript = async () => {
       try {
         await Promise.resolve(
@@ -79,11 +85,18 @@ export function useAwaitables<
           mem.flowScript?.(awaitablesMap)
         )
       } catch (e) {
-        if (e instanceof Error && e.message === 'ABORTED') return
-        logger.error('Error running the flow', e)
+        if (e instanceof Error && e.message === 'ABORTED') {
+          canceled = { reason: 'manual' }
+          return
+        }
+        canceled = { reason: 'error', error: e }
+        logger.error('Error running the flow ->', e)
       }
     }
     runFlowScript()
+      .finally(() => {
+        options.finishCb?.(canceled)
+      })
 
     return () => {
       mem.mounted = false
