@@ -1,7 +1,9 @@
+/* eslint-disable no-constant-condition */
 import { render, waitFor, act } from '@testing-library/react';
 import React from 'react';
 
-import {useAwaitables, FlowScript, TestingActionsToCall} from '../../src/lib/react-awaitables-hook';
+import {TestingActionsToCall} from '../../src/lib/core';
+import {useAwaitables, FlowScript} from '../../src/lib/hook';
 
 describe('ReactAwaitablesHook', () => {
   it('render successfully', async () => {
@@ -16,7 +18,7 @@ describe('ReactAwaitablesHook', () => {
   });
 
   it('render direct state update', () => {
-    const flowScript: FlowScript<StateShape> = ({ setState }) => {
+    const flowScript: TestFlowScript = ({ setState }) => {
       setState({ title: 'ready' })
     }
     const testerChildren = jest.fn() 
@@ -29,7 +31,7 @@ describe('ReactAwaitablesHook', () => {
   });
 
   it('render direct concurrent state updates', () => {
-    const flowScript: FlowScript<StateShape> = ({ setState }) => {
+    const flowScript: TestFlowScript = ({ setState }) => {
       setState({ title: 'ready' })
       setState({ title: 'running..' })
       // batched updates make end up with the last one
@@ -44,7 +46,7 @@ describe('ReactAwaitablesHook', () => {
   });
 
   it('render in-sequence state updates (case 1)', async () => {
-    const flowScript: FlowScript<StateShape> = async ({ setState }) => {
+    const flowScript: TestFlowScript = async ({ setState }) => {
       await setState({ title: 'ready' })
       // ready was rendered! ..then
       setState({ title: 'running..' })
@@ -61,7 +63,7 @@ describe('ReactAwaitablesHook', () => {
   });
 
   it('render in-sequence state updates (case 2)', async () => {
-    const flowScript: FlowScript<StateShape> = async ({ setState }) => {
+    const flowScript: TestFlowScript = async ({ setState }) => {
       for (let i = 1; i<=5; i+=1) {
         await setState({ title: `step ${i}` })
       }
@@ -84,7 +86,7 @@ describe('ReactAwaitablesHook', () => {
   it('render delayed state update', async () => {
     jest.useFakeTimers()
     try {
-      const flowScript: FlowScript<StateShape> = async ({ setState, delay }) => {
+      const flowScript: TestFlowScript = async ({ setState, delay }) => {
         await delay(1000)
         setState({ title: 'hello' })
       }
@@ -106,7 +108,7 @@ describe('ReactAwaitablesHook', () => {
   });
 
   it('render user-triggered state update', async () => {
-    const flowScript: FlowScript<StateShape, ActionsMap> = async ({ setState, untilAction }) => {
+    const flowScript: TestFlowScript = async ({ setState, untilAction }) => {
       const action = await untilAction('setName')
       await setState({ title: `user called action: [${action.actionId}] -- so, hello ${action.guessName}` })
       await setState({ title: 'done' })
@@ -124,6 +126,36 @@ describe('ReactAwaitablesHook', () => {
     expect(testerChildren).nthCalledWith(1, { title: 'loading...' }, expect.anything())
     expect(testerChildren).nthCalledWith(2, { title: 'user called action: [setName] -- so, hello Jorge' }, expect.anything())
     expect(testerChildren).toBeCalledTimes(3)
+  });
+
+  it('render user-multi-choise-triggered state update', async () => {
+    const flowScript: TestFlowScript = async ({ setState, untilAction }) => {
+      let lastInLoopUpd = Promise.resolve()
+      while (true) {
+        const action = await untilAction(['accept', 'discard'])
+        lastInLoopUpd = setState({ title: `user called action: [${action.actionId}]` })
+        if (action.actionId === 'discard') break
+      }
+      await lastInLoopUpd // avoid batching post-discard triggered upd with the next (done)
+      await setState({ title: 'done' })
+    }
+    const testerChildren = jest.fn() 
+
+    render(<Tester flowScript={flowScript}>{testerChildren}</Tester>);
+    
+    const testActions = usingTestActions(testerChildren)
+    // await testActions.accept() // til next render
+    // await testActions.discard() // til next render
+    await act(() => { testActions.accept() }) // til next render
+    await act(() => { testActions.discard() }) // til next render
+
+    await waitFor(() => {
+      expect(testerChildren).lastCalledWith({ title: 'done' }, expect.anything())
+    })
+    expect(testerChildren).nthCalledWith(1, { title: 'loading...' }, expect.anything())
+    expect(testerChildren).nthCalledWith(2, { title: 'user called action: [accept]' }, expect.anything())
+    expect(testerChildren).nthCalledWith(3, { title: 'user called action: [discard]' }, expect.anything())
+    expect(testerChildren).toBeCalledTimes(4)
   });
 });
 
@@ -148,12 +180,15 @@ interface StateShape {
 const initialState: StateShape = { title: 'loading...' }
 
 const actionsMap = {
-  canStart: (can: boolean) => ({ canNot: !can }),
-  setName: (name: string) => ({ guessName: name })
+  setName: (name: string) => ({ guessName: name }),
+  accept: () => ({}),
+  discard: () => ({})
 }
 type ActionsMap = typeof actionsMap
 
+type TestFlowScript = FlowScript<StateShape, ActionsMap>
+
 interface TesterProps {
-  flowScript: FlowScript<StateShape> 
+  flowScript: TestFlowScript 
   children: (...args: unknown[]) => ReturnType<React.FC>
 }

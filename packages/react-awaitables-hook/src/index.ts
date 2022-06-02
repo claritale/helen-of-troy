@@ -1,1 +1,1 @@
-export * from './lib/react-awaitables-hook';
+export * from './lib/hook';
