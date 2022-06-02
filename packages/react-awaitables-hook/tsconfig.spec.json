@@ -8,6 +8,7 @@
   "include": [
     "jest.config.ts",
     "jest.setupTests.ts",
+    "**/__tests__/",
     "**/*.test.ts",
     "**/*.spec.ts",
     "**/*.test.tsx",

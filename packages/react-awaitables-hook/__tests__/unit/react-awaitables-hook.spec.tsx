@@ -1,9 +1,7 @@
 /* eslint-disable no-constant-condition */
 import { render, waitFor, act } from '@testing-library/react';
-import React from 'react';
 
-import {TestingActionsToCall} from '../../src/lib/core';
-import {useAwaitables, FlowScript} from '../../src/lib/hook';
+import { Tester, TestFlowScript, usingTestActions } from './Tester';
 
 describe('ReactAwaitablesHook', () => {
   it('render successfully', async () => {
@@ -160,35 +158,4 @@ describe('ReactAwaitablesHook', () => {
 });
 
 
-/**
- *  A component that expects props to have a flowScript to be run and a callable children, 
- *  which will be called with with refs to curr state and actions fns
- */
-const Tester: React.FC<TesterProps> = ({ flowScript, children }) => {
-  const { flowRunner, state, actions } = useAwaitables(initialState, actionsMap)
-  flowRunner(flowScript)
-  return children(state, actions)
-}
 
-function usingTestActions(testerChildren: jest.Mock): TestingActionsToCall<ActionsMap> {
-  return testerChildren.mock.calls[0][1]
-}
-
-interface StateShape {
-  title: string
-}
-const initialState: StateShape = { title: 'loading...' }
-
-const actionsMap = {
-  setName: (name: string) => ({ guessName: name }),
-  accept: () => ({}),
-  discard: () => ({})
-}
-type ActionsMap = typeof actionsMap
-
-type TestFlowScript = FlowScript<StateShape, ActionsMap>
-
-interface TesterProps {
-  flowScript: TestFlowScript 
-  children: (...args: unknown[]) => ReturnType<React.FC>
-}
