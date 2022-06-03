@@ -27,7 +27,7 @@ describe('ReactAwaitablesHook', () => {
     expect(testerChildren).lastCalledWith({ title: 'loading...' }, expect.anything())
   });
 
-  it('on finish callback', async () => {
+  it('finish cb - simply finished (not canceled)', async () => {
     const flowScript = jest.fn()
 
     render(<Tester flowScript={flowScript} options={options}>{testerChildren}</Tester>);
