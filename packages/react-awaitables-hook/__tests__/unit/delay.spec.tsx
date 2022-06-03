@@ -37,6 +37,22 @@ describe('ReactAwaitablesHook', () => {
     expect(testerChildren).nthCalledWith(2, { title: 'hello' }, expect.anything())
     expect(testerChildren).toBeCalledTimes(2)
   });
+
+  it('delay canceled by unmount', async () => {
+    const flowScript: TestFlowScript = async ({ delay }) => {
+      await delay(1000)
+      throw new Error('boom!') // should be ignored
+    }
+
+    const { unmount } = render(<Tester flowScript={flowScript} options={options}>{testerChildren}</Tester>);
+
+    unmount()
+
+    await waitFor(() => { expect(finishCb).toBeCalled() })
+
+    expect(logger.error).not.toBeCalled()
+    expect(finishCb).toBeCalledWith({ reason: 'unmounted' })
+  });
 });
 
 
