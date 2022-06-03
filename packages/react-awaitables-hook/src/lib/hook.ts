@@ -14,7 +14,7 @@ export interface FlowScript<StateShape, ActionsMap extends AnyActionsMap = any> 
   (_: BasicAwaitables<StateShape, ActionsMap>): Promise<void> | void
 }
 
-type CanceledStatus = false | { reason: 'manual' | 'unmounted' | 'error', error?: unknown }
+type CanceledStatus = false | { reason: 'unmounted' | 'manual' | 'error', error?: unknown }
 export type FinishCb = (canceled: CanceledStatus) => void
 export type HookOptions = { finishCb?: FinishCb, logger?: Console }
 
@@ -78,11 +78,11 @@ export function useAwaitables<
     mem.mounted = true
     const unmountedDefer = createDefer()
 
-    const finishState: { canceled: CanceledStatus } = { canceled: false }
+    const runState: { canceled: CanceledStatus } = { canceled: false }
     unmountedDefer.promise
       .then(() => {
-        if (finishState.canceled === false) {
-          finishState.canceled = { reason: 'unmounted' }
+        if (runState.canceled === false) {
+          runState.canceled = { reason: 'unmounted' }
         }
       })
 
@@ -93,14 +93,14 @@ export function useAwaitables<
           mem.flowScript?.(awaitablesMap)
         )
       } catch (e) {
-        if (finishState.canceled && finishState.canceled.reason === 'unmounted') {
+        if (runState.canceled && runState.canceled.reason === 'unmounted') {
           return
         }
         if (e instanceof Error && e.message === CANCELED) {
-          finishState.canceled = { reason: 'manual' }
+          runState.canceled = { reason: 'manual' }
           return
         }
-        finishState.canceled = { reason: 'error', error: e }
+        runState.canceled = { reason: 'error', error: e }
         logger.error('Catched Error running the Flow ->', e)
       }
     }
@@ -113,7 +113,7 @@ export function useAwaitables<
         console.error('Unexpected unhandled error ->', e)
       })
       .finally(() => {
-        options.finishCb?.(finishState.canceled)
+        options.finishCb?.(runState.canceled)
       })
 
     return () => {
