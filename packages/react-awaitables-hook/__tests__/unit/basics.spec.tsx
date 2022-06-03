@@ -8,9 +8,17 @@ import { Tester, TestFlowScript } from './Tester';
 import { HookOptions } from '../../src/lib/hook';
 
 describe('ReactAwaitablesHook', () => {
+  const finishCb = jest.fn()
+  const logger: Console = { error: jest.fn() } as any
+  const options: HookOptions = { finishCb, logger }
+  const testerChildren = jest.fn() 
+
+  beforeEach(() => {
+    jest.clearAllMocks()
+  })
+
   it('render successfully', async () => {
     const flowScript = jest.fn()
-    const testerChildren = jest.fn() 
 
     const { baseElement } = render(<Tester flowScript={flowScript}>{testerChildren}</Tester>);
     expect(baseElement).toBeTruthy();
@@ -21,9 +29,6 @@ describe('ReactAwaitablesHook', () => {
 
   it('on finish callback', async () => {
     const flowScript = jest.fn()
-    const finishCb = jest.fn()
-    const options: HookOptions = { finishCb }
-    const testerChildren = jest.fn() 
 
     render(<Tester flowScript={flowScript} options={options}>{testerChildren}</Tester>);
 
@@ -33,19 +38,46 @@ describe('ReactAwaitablesHook', () => {
     })
   });
 
-  it('finish cb - canceled with sync error', async () => {
+  it('finish cb - canceled by unmount', async () => {
+    const flowScript = async () => {
+      await new Promise((done) => setTimeout(done, 100))
+      throw new Error('boom!') // should be ignored
+    }
+
+    const { unmount } = render(<Tester flowScript={flowScript} options={options}>{testerChildren}</Tester>);
+
+    unmount()
+
+    await waitFor(() => { expect(finishCb).toBeCalled() })
+
+    expect(logger.error).not.toBeCalled()
+    expect(finishCb).toBeCalledWith({ reason: 'unmounted' })
+  });
+
+  it('finish cb - canceled by sync error', async () => {
     const flowScript = () => {
       throw new Error('boom!')
     }
-    const finishCb = jest.fn()
-    const logger: Console = { error: jest.fn() } as any
-    const options: HookOptions = { finishCb, logger }
-    const testerChildren = jest.fn() 
 
     render(<Tester flowScript={flowScript} options={options}>{testerChildren}</Tester>);
 
     await waitFor(() => { expect(finishCb).toBeCalled() })
-    expect(logger.error).toBeCalledWith('Error running the flow ->', new Error('boom!'))
+
+    expect(logger.error).toBeCalledWith('Catched Error running the Flow ->', new Error('boom!'))
+    expect(finishCb).toBeCalledWith({ reason: 'error', error: new Error('boom!') })
+  });
+
+  it('finish cb - canceled by async error', async () => {
+    const flowScript = async () => {
+      await new Promise((done) => setTimeout(done, 100))
+      throw new Error('boom!')
+    }
+
+    render(<Tester flowScript={flowScript} options={options}>{testerChildren}</Tester>);
+
+    await waitFor(() => { expect(finishCb).toBeCalled() })
+
+    expect(logger.error).toBeCalledWith('Catched Error running the Flow ->', new Error('boom!'))
     expect(finishCb).toBeCalledWith({ reason: 'error', error: new Error('boom!') })
   });
 });

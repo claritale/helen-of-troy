@@ -14,7 +14,7 @@ export interface FlowScript<StateShape, ActionsMap extends AnyActionsMap = any> 
   (_: BasicAwaitables<StateShape, ActionsMap>): Promise<void> | void
 }
 
-type CanceledStatus = false | { reason: 'manual' | 'error', error?: unknown }
+type CanceledStatus = false | { reason: 'manual' | 'unmounted' | 'error', error?: unknown }
 export type FinishCb = (canceled: CanceledStatus) => void
 export type HookOptions = { finishCb?: FinishCb, logger?: Console }
 
@@ -51,7 +51,7 @@ export function useAwaitables<
   const execWhileIsMounted = useCallback<SafeExecutionWrapper>((toExec) => {
     const assertIsMounted = (v?: any) => {
       if (mem.mounted) return v
-      throw new Error('ABORTED')
+      throw new Error(CANCELED)
     }
     return (...params) => {
       assertIsMounted()
@@ -76,8 +76,16 @@ export function useAwaitables<
 
   useEffect(() => {
     mem.mounted = true
+    const unmountedDefer = createDefer()
 
-    let canceled: CanceledStatus = false
+    const finishState: { canceled: CanceledStatus } = { canceled: false }
+    unmountedDefer.promise
+      .then(() => {
+        if (finishState.canceled === false) {
+          finishState.canceled = { reason: 'unmounted' }
+        }
+      })
+
     const runFlowScript = async () => {
       try {
         await Promise.resolve(
@@ -85,21 +93,32 @@ export function useAwaitables<
           mem.flowScript?.(awaitablesMap)
         )
       } catch (e) {
-        if (e instanceof Error && e.message === 'ABORTED') {
-          canceled = { reason: 'manual' }
+        if (finishState.canceled && finishState.canceled.reason === 'unmounted') {
           return
         }
-        canceled = { reason: 'error', error: e }
-        logger.error('Error running the flow ->', e)
+        if (e instanceof Error && e.message === CANCELED) {
+          finishState.canceled = { reason: 'manual' }
+          return
+        }
+        finishState.canceled = { reason: 'error', error: e }
+        logger.error('Catched Error running the Flow ->', e)
       }
     }
-    runFlowScript()
+
+    Promise.race([
+      unmountedDefer.promise,
+      runFlowScript()
+    ])
+      .catch((e) => {
+        console.error('Unexpected unhandled error ->', e)
+      })
       .finally(() => {
-        options.finishCb?.(canceled)
+        options.finishCb?.(finishState.canceled)
       })
 
     return () => {
       mem.mounted = false
+      unmountedDefer.resolve()
     }
   }, []) // eslint-disable-line react-hooks/exhaustive-deps
 
@@ -116,3 +135,4 @@ export function useAwaitables<
   }
 }
 
+const CANCELED = 'CANCELED'

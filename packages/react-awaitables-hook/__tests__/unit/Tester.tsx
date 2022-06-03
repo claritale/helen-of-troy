@@ -9,10 +9,7 @@ import { useAwaitables, FlowScript, FinishCb } from '../../src/lib/hook';
  */
  interface TesterProps {
   flowScript: TestFlowScript;
-  options?: {
-    onFinish?: FinishCb;
-    logger?: Console;
-  },
+  options?: { onFinish?: FinishCb; logger?: Console; },
   children: (...args: unknown[]) => ReturnType<React.FC>;
 }
 export const Tester: React.FC<TesterProps> = ({ flowScript, options = {}, children }) => {
