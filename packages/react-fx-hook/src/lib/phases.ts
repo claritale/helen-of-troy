@@ -253,14 +253,12 @@ class ShapesHelper<PropsTypes extends object, StateShape extends object, Actions
   }
 }
 
-export type PropsTypes<V> = InferProps<V>
-
 export function applyIoPhasesShapes<P extends object, S extends object, A extends object>(shapes?: {
   propsShape: P
   stateShape: S
   actionsShape?: A
-}): ShapesHelper<PropsTypes<P>, S, A> {
-  return new ShapesHelper<PropsTypes<P>, S, A>(shapes as any)
+}): ShapesHelper<P, S, A> {
+  return new ShapesHelper<P, S, A>(shapes as any)
 }
 
 interface CancelledStatus {
